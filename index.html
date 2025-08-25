@@ -192,7 +192,6 @@ if ('serviceWorker' in navigator) {
         "최악": "매우 강한 부정 평가로, 불만 강도가 높습니다.",
         "법적대응": "법적 절차를 진행하겠다는 의사 표현입니다."
     };
-
     let isComposing = false;
 
     inputArea.addEventListener('compositionstart', () => { isComposing = true; });
@@ -279,7 +278,7 @@ if ('serviceWorker' in navigator) {
     }
 </script>
 
-<!-- 🔒 보안 상태 표시 (채팅창 밖, 페이지 하단) -->
+<!-- 🔒 보안 상태 표시 -->
 <script>
 const statusBox = document.getElementById('securityStatus');
 statusBox.textContent = "🔒 보안 상태: 안전 — 외부 전송 없음";
@@ -346,11 +345,6 @@ document.getElementById('installBtn').addEventListener('click', () => {
   if (deferredPrompt) {
     deferredPrompt.prompt(); // 브라우저 설치 팝업 실행
     deferredPrompt.userChoice.then((choice) => {
-      if (choice.outcome === 'accepted') {
-        console.log('사용자가 설치를 수락했습니다.');
-      } else {
-        console.log('사용자가 설치를 취소했습니다.');
-      }
       deferredPrompt = null;
       document.getElementById('installModal').style.display = 'none';
     });
