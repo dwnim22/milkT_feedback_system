@@ -135,6 +135,18 @@ if ('serviceWorker' in navigator) {
         text-align: left;
         color: green;
     }
+    /* 설치 버튼 스타일 */
+    #installTrigger {
+        display: none;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 1em;
+        background: #003366;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
@@ -155,6 +167,9 @@ if ('serviceWorker' in navigator) {
         <div id="keywordList" class="keywords"></div>
         <div class="guide-text" id="clickGuide" style="display:none;">감지된 키워드를 클릭하면 설명이 표시됩니다.</div>
         <div id="keywordDesc" class="keyword-desc"></div>
+
+        <!-- 항상 보이는 설치 버튼 -->
+        <button id="installTrigger">📲 앱 설치</button>
     </main>
 
     <div id="securityStatus">🔒 보안 상태: 안전 — 외부 전송 없음</div>
@@ -192,6 +207,7 @@ if ('serviceWorker' in navigator) {
         "최악": "매우 강한 부정 평가로, 불만 강도가 높습니다.",
         "법적대응": "법적 절차를 진행하겠다는 의사 표현입니다."
     };
+
     let isComposing = false;
 
     inputArea.addEventListener('compositionstart', () => { isComposing = true; });
@@ -305,57 +321,27 @@ function MonitorXHR() {
 window.XMLHttpRequest = MonitorXHR;
 </script>
 
-<!-- 설치 안내 모달 -->
-<div id="installModal" style="
-  display:none; position:fixed; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  background:white; padding:30px; border-radius:12px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.3);
-  text-align:center; z-index:9999; max-width:320px; width:90%;
-">
-  <h2 style="margin-top:0;">📲 앱 설치하기</h2>
-  <p style="font-size:0.95em; line-height:1.4;">
-    설치하면 주소창 없이<br>더 편하게 사용할 수 있습니다.
-  </p>
-  <button id="installBtn" style="
-    padding:10px 20px; font-size:1.1em;
-    background:#003366; color:white; border:none;
-    border-radius:6px; cursor:pointer;
-  ">설치</button>
-  <div style="margin-top:10px;">
-    <button id="closeModal" style="
-      background:none; border:none; color:#666;
-      font-size:0.85em; cursor:pointer;
-    ">나중에</button>
-  </div>
-</div>
-
+<!-- 설치 버튼 동작 -->
 <script>
 let deferredPrompt;
 
-// 브라우저가 설치 가능하다고 판단하면 발생
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); // 기본 작은 배너 막기
+  e.preventDefault();
   deferredPrompt = e;
-  document.getElementById('installModal').style.display = 'block';
+  document.getElementById('installTrigger').style.display = 'block';
 });
 
-// 설치 버튼 클릭 시
-document.getElementById('installBtn').addEventListener('click', () => {
+document.getElementById('installTrigger').addEventListener('click', () => {
   if (deferredPrompt) {
-    deferredPrompt.prompt(); // 브라우저 설치 팝업 실행
-    deferredPrompt.userChoice.then((choice) => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
       deferredPrompt = null;
-      document.getElementById('installModal').style.display = 'none';
+      document.getElementById('installTrigger').style.display = 'none';
     });
   }
-});
-
-// 닫기 버튼
-document.getElementById('closeModal').addEventListener('click', () => {
-  document.getElementById('installModal').style.display = 'none';
 });
 </script>
 
 </body>
 </html>
+
