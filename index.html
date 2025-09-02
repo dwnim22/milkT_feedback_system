@@ -276,14 +276,25 @@
     }
     window.XMLHttpRequest = MonitorXHR;
 
-    // 📲 PWA 설치 버튼 처리
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installBtn = document.getElementById('installTrigger');
-      if (installBtn) installBtn.style.display = 'block';
-    });
+// 📲 PWA 설치 안내 자동 표시
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // 기본 동작 막기
+  deferredPrompt = e;
+
+  // 👉 자동으로 설치 안내 띄우기
+  deferredPrompt.prompt();
+
+  // 선택 결과 확인 (선택적)
+  deferredPrompt.userChoice.then(choiceResult => {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('앱 설치 완료');
+    } else {
+      console.log('사용자가 설치를 취소함');
+    }
+    deferredPrompt = null;
+  });
+});
 
     const installBtn = document.getElementById('installTrigger');
     if (installBtn) {
