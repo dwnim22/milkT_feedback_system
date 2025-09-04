@@ -373,7 +373,6 @@
 
         // 📲 설치 안내 팝업 UI
         let deferredPrompt;
-
         const installPopup = document.getElementById('installPopup');
         const confirmInstall = document.getElementById('confirmInstall');
         const cancelInstall = document.getElementById('cancelInstall');
@@ -381,6 +380,13 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
+            // 설치 가능 상태일 때만 팝업 표시
+            installPopup.style.display = 'block';
+        });
+
+        window.addEventListener('appinstalled', () => {
+            // 설치 완료 후 팝업 숨기기
+            installPopup.style.display = 'none';
         });
 
         confirmInstall.addEventListener('click', () => {
@@ -405,23 +411,13 @@
             deferredPrompt = null;
         });
 
-        // ✅ 설치된 경우 팝업 숨기기 로직 수정
-        window.addEventListener('DOMContentLoaded', () => {
-            const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
-            if (!isInstalled) {
-                // 앱이 설치되어 있지 않은 경우에만 설치 팝업을 표시
-                if (deferredPrompt) {
-                    installPopup.style.display = 'block';
-                }
-            }
-            
-            // ✅ service worker 등록
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(() => console.log('✅ Service Worker 등록 완료'))
-                    .catch(err => console.error('❌ Service Worker 등록 실패:', err));
-            }
-        });
+        // ✅ service worker 등록
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('✅ Service Worker 등록 완료'))
+                .catch(err => console.error('❌ Service Worker 등록 실패:', err));
+        }
+
     </script>
 </body>
 </html>
