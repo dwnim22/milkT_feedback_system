@@ -1,401 +1,440 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>밀크티 고객센터 불만 감지 시스템</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    header {
-      background: linear-gradient(135deg, #003366, #00509e);
-      color: white;
-      padding: 20px;
-      font-size: 1.8em;
-      font-weight: bold;
-      border-radius: 0 0 12px 12px;
-      text-align: center;
-    }
-    main {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      margin-top: 20px;
-    }
-    .notice {
-      background-color: #f9fafb;
-      border-left: 5px solid #00509e;
-      padding: 15px 20px;
-      margin-bottom: 20px;
-      font-size: 0.95em;
-      line-height: 1.6;
-    }
-    .input-area {
-      width: 100%;
-      min-height: 150px;
-      padding: 15px;
-      box-sizing: border-box;
-      font-size: 0.95em;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: white;
-      outline: none;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1em;
-      display: none;
-    }
-    .complaint {
-      background-color: #fff0f0;
-      border: 1px solid #c0392b;
-      color: #c0392b;
-    }
-    .normal {
-      background-color: #e6f4ea;
-      border: 1px solid #2e7d32;
-      color: #1b5e20;
-    }
-    .keywords {
-      margin-top: 10px;
-      font-size: 0.95em;
-    }
-    .keyword {
-      display: inline-block;
-      background-color: #ffcccc;
-      color: #900;
-      padding: 4px 8px;
-      margin: 4px;
-      border-radius: 4px;
-      font-weight: normal;
-      cursor: pointer;
-      font-size: 0.95em;
-    }
-    .keyword-desc {
-      margin-top: 10px;
-      padding: 10px;
-      background: #f1f1f1;
-      border-radius: 6px;
-      font-size: 0.9em;
-      display: none;
-    }
-    #securityStatus {
-      margin-top: 30px;
-      font-weight: bold;
-      font-size: 0.85em;
-      text-align: center;
-      background-color: #003366;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 0 0 12px 12px;
-    }
-    #installPopup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 2px solid #00509e;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      z-index: 9999;
-      text-align: center;
-    }
-    #installPopup button {
-      margin: 5px;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    #confirmInstall {
-      background: #00509e;
-      color: white;
-    }
-    #cancelInstall {
-      background: #ccc;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>밀크티 고객센터 불만 감지 시스템</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background: linear-gradient(135deg, #003366, #00509e);
+            color: white;
+            padding: 20px;
+            font-size: 1.8em;
+            font-weight: bold;
+            border-radius: 0 0 12px 12px;
+            text-align: center;
+        }
+        main {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-top: 20px;
+        }
+        .notice {
+            background-color: #f9fafb;
+            border-left: 5px solid #00509e;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .input-area {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 0.95em;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            outline: none;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1em;
+            display: none;
+        }
+        .complaint {
+            background-color: #fff0f0;
+            border: 1px solid #c0392b;
+            color: #c0392b;
+        }
+        .normal {
+            background-color: #e6f4ea;
+            border: 1px solid #2e7d32;
+            color: #1b5e20;
+        }
+        .keywords {
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+        .keyword {
+            display: inline-block;
+            background-color: #ffcccc;
+            color: #900;
+            padding: 4px 8px;
+            margin: 4px;
+            border-radius: 4px;
+            font-weight: normal;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .keyword-desc {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 6px;
+            font-size: 0.9em;
+            display: none;
+        }
+        #securityStatus {
+            margin-top: 30px;
+            font-weight: bold;
+            font-size: 0.85em;
+            text-align: center;
+            background-color: #003366;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 0 0 12px 12px;
+        }
+        #installPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 2px solid #00509e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            text-align: center;
+        }
+        #installPopup button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        #confirmInstall {
+            background: #00509e;
+            color: white;
+        }
+        #cancelInstall {
+            background: #ccc;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <header>밀크티 고객센터 불만 감지 시스템</header>
-    <main>
-      <div class="notice">
-        상담 내용을 입력하면, 불만으로 의심되는 표현을 실시간으로 감지하여 결과를 나타냅니다.<br>
-        해당 결과를 참고하여 <strong>VOC 구분 입력</strong>을 합니다.<br>
-        <strong>이 결과는 참고용이며, 최종 판단은 상담사가 직접 해야합니다.</strong>
-      </div>
+    <div class="container">
+        <header>밀크티 고객센터 불만 감지 시스템</header>
+        <main>
+            <div class="notice">
+                상담 내용을 입력하면, 불만으로 의심되는 표현을 실시간으로 감지하여 결과를 나타냅니다.<br>
+                해당 결과를 참고하여 <strong>VOC 구분 입력</strong>을 합니다.<br>
+                <strong>이 결과는 참고용이며, 최종 판단은 상담사가 직접 해야합니다.</strong>
+            </div>
 
-      <div id="inputArea" class="input-area" contenteditable="true" spellcheck="false"></div>
+            <div id="inputArea" class="input-area" contenteditable="true" spellcheck="false"></div>
 
-      <div id="resultBox" class="result"></div>
-      <div id="keywordList" class="keywords"></div>
-      <div id="keywordDesc" class="keyword-desc"></div>
-    </main>
+            <div id="resultBox" class="result"></div>
+            <div id="keywordList" class="keywords"></div>
+            <div id="keywordDesc" class="keyword-desc"></div>
+        </main>
 
-    <div id="securityStatus">🔒 보안 상태: 안전 — 외부 전송 없음</div>
-  </div>
+        <div id="securityStatus">🔒 보안 상태: 안전 — 외부 전송 없음</div>
+    </div>
 
-  <div id="installPopup">
-    <p style="font-size:1.1em; margin-bottom:15px;">📲 이 앱을 설치하시겠습니까?</p>
-    <button id="confirmInstall">설치</button>
-    <button id="cancelInstall">취소</button>
-  </div>
+    <div id="installPopup">
+        <p style="font-size:1.1em; margin-bottom:15px;">📲 이 앱을 설치하시겠습니까?</p>
+        <button id="confirmInstall">설치</button>
+        <button id="cancelInstall">취소</button>
+    </div>
 
-  <script>
-    const inputArea = document.getElementById('inputArea');
-    const resultBox = document.getElementById('resultBox');
-    const keywordList = document.getElementById('keywordList');
-    const keywordDescBox = document.getElementById('keywordDesc');
+    <script>
+        const inputArea = document.getElementById('inputArea');
+        const resultBox = document.getElementById('resultBox');
+        const keywordList = document.getElementById('keywordList');
+        const keywordDescBox = document.getElementById('keywordDesc');
 
-    const complaintKeywords = [
-      "불만", "불쾌", "항의", "짜증", "실망", "불친절",
-      "기분 나빴", "언짢", "무례", "부당", "기분 상했", "강성",
-      "신고", "경찰", "소보원", "소비자보호원", "소비자 보호원",
-      "욕설", "최악", "법적대응"
-    ];
+        const complaintKeywords = [
+            "불만", "불쾌", "항의", "짜증", "실망", "불친절",
+            "기분 나빴", "언짢", "무례", "부당", "기분 상했", "강성",
+            "신고", "경찰", "소보원", "소비자보호원", "소비자 보호원",
+            "욕설", "최악", "법적대응"
+        ];
 
-    const keywordDescriptions = {
-      "불만": "서비스나 제품에 대한 전반적인 불만 표현입니다.",
-      "불쾌": "고객이 기분이 상하거나 불쾌감을 느낀 상황입니다.",
-      "항의": "문제 제기와 함께 시정 요구 가능성이 높습니다.",
-      "짜증": "불편·불만이 감정적으로 표출된 상태입니다.",
-      "실망": "기대에 미치지 못해 부정적 평가를 하는 경우입니다.",
-      "불친절": "응대 태도나 서비스 매너에 대한 부정적 피드백입니다.",
-      "기분 나빴": "발언·행동으로 인해 감정이 상한 상태입니다.",
-      "언짢": "사소해 보이지만 불만으로 번질 수 있는 감정 표현입니다.",
-      "무례": "예의 없는 태도나 발언에 대한 지적입니다.",
-      "부당": "불공정·부정확한 처리에 대한 문제 제기입니다.",
-      "기분 상했": "고객 감정이 크게 상한 상태로, 진정이 필요합니다.",
-      "강성": "강경한 어조로 불만을 제기하는 경우입니다.",
-      "신고": "외부 기관에 문제를 알리겠다는 의사 표현입니다.",
-      "경찰": "법적·형사적 조치를 암시하는 발언입니다.",
-      "소보원": "소비자보호원에 신고 의사를 밝히는 경우입니다.",
-      "소비자보호원": "소비자보호원에 신고 의사를 밝히는 경우입니다.",
-      "소비자 보호원": "소비자보호원에 신고 의사를 밝히는 경우입니다.",
-      "욕설": "부적절한 언어 사용으로 감정이 격해진 상태입니다.",
-      "최악": "매우 강한 부정 평가로, 불만 강도가 높습니다.",
-      "법적대응": "법적 절차를 진행하겠다는 의사 표현입니다."
-    };
+        const keywordDescriptions = {
+            "불만": "서비스나 제품에 대한 전반적인 불만 표현입니다.",
+            "불쾌": "고객이 기분이 상하거나 불쾌감을 느낀 상황입니다.",
+            "항의": "문제 제기와 함께 시정 요구 가능성이 높습니다.",
+            "짜증": "불편·불만이 감정적으로 표출된 상태입니다.",
+            "실망": "기대에 미치지 못해 부정적 평가를 하는 경우입니다.",
+            "불친절": "응대 태도나 서비스 매너에 대한 부정적 피드백입니다.",
+            "기분 나빴": "발언·행동으로 인해 감정이 상한 상태입니다.",
+            "언짢": "사소해 보이지만 불만으로 번질 수 있는 감정 표현입니다.",
+            "무례": "예의 없는 태도나 발언에 대한 지적입니다.",
+            "부당": "불공정·부정확한 처리에 대한 문제 제기입니다.",
+            "기분 상했": "고객 감정이 크게 상한 상태로, 진정이 필요합니다.",
+            "강성": "강경한 어조로 불만을 제기하는 경우입니다.",
+            "신고": "외부 기관에 문제를 알리겠다는 의사 표현입니다.",
+            "경찰": "법적·형사적 조치를 암시하는 발언입니다.",
+            "소보원": "소비자보호원에 신고 의사를 밝히는 경우입니다.",
+            "소비자보호원": "소비자보호원에 신고 의사를 밝히는 경우입니다.",
+            "소비자 보호원": "소비자보호원에 신고 의사를 밝히는 경우입니다.",
+            "욕설": "부적절한 언어 사용으로 감정이 격해진 상태입니다.",
+            "최악": "매우 강한 부정 평가로, 불만 강도가 높습니다.",
+            "법적대응": "법적 절차를 진행하겠다는 의사 표현입니다."
+        };
 
-  let isComposing = false;
-
-  inputArea.addEventListener('compositionstart', () => { isComposing = true; });
-  inputArea.addEventListener('compositionend', () => { isComposing = false; highlightKeywords(); });
-  inputArea.addEventListener('input', () => { if (!isComposing) highlightKeywords(); });
-
-  function highlightKeywords() {
-    const caretOffset = getCaretCharacterOffsetWithin(inputArea);
-    const rawText = inputArea.textContent;
-    let keywordCounts = {};
-    let highlightedText = escapeHTML(rawText);
-
-    complaintKeywords.forEach(keyword => {
-      const regex = new RegExp(`(${keyword})`, 'gi');
-      const matches = rawText.match(regex);
-      if (matches) {
-        keywordCounts[keyword] = matches.length;
-        highlightedText = highlightedText.replace(regex, `<span style="color:red;">$1</span>`);
-      }
-    });
-
-    inputArea.innerHTML = highlightedText;
-    setCaretPosition(inputArea, caretOffset);
-
-    const foundKeywords = Object.keys(keywordCounts);
-
-    if (foundKeywords.length > 0) {
-      inputArea.style.border = '1px solid red';
-      resultBox.className = 'result complaint';
-      resultBox.innerText = '🚨 불만 의심 표현이 감지되었습니다.';
-      resultBox.style.display = 'block';
-
-      keywordList.innerHTML = '';
-      foundKeywords.forEach(k => {
-        const span = document.createElement('span');
-        span.className = 'keyword';
-        span.innerText = `${k}(${keywordCounts[k]})`;
-        span.addEventListener('click', () => {
-          keywordDescBox.innerText = `「${k}」: ${keywordDescriptions[k] || '설명 없음'}`;
-          keywordDescBox.style.display = 'block';
+        let isComposing = false;
+        
+        inputArea.addEventListener('compositionstart', () => { isComposing = true; });
+        inputArea.addEventListener('compositionend', () => {
+            isComposing = false;
+            highlightKeywords();
         });
-        keywordList.appendChild(span);
-      });
 
-      const totalCount = Object.values(keywordCounts).reduce((a, b) => a + b, 0);
-      const summary = document.createElement('div');
-      summary.style.marginTop = '10px';
-      summary.style.fontWeight = 'bold';
-      summary.style.fontSize = '1.1em';
-      summary.textContent = `총 감지 단어 수: ${totalCount}개`;
-      keywordList.appendChild(summary);
-    } else {
-      inputArea.style.border = '1px solid #ccc';
-      resultBox.className = 'result normal';
-      resultBox.innerText = '✅ 불만 표현이 감지되지 않았습니다.';
-      resultBox.style.display = 'block';
-      keywordList.innerHTML = '';
-      keywordDescBox.style.display = 'none';
-    }
-  }
-
-  function escapeHTML(text) {
-    return text.replace(/&/g, '&amp;')
-               .replace(/</g, '&lt;')
-               .replace(/>/g, '&gt;');
-  }
-
-  function getCaretCharacterOffsetWithin(element) {
-    const selection = window.getSelection();
-    let caretOffset = 0;
-    if (selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const preCaretRange = range.cloneRange();
-      preCaretRange.selectNodeContents(element);
-      preCaretRange.setEnd(range.endContainer, range.endOffset);
-      caretOffset = preCaretRange.toString().length;
-    }
-    return caretOffset;
-  }
-
-  function setCaretPosition(element, offset) {
-    const selection = window.getSelection();
-    const range = document.createRange();
-    let currentOffset = 0;
-    let found = false;
-
-    function traverse(node) {
-      if (found) return;
-      if (node.nodeType === Node.TEXT_NODE) {
-        const nextOffset = currentOffset + node.length;
-        if (offset <= nextOffset) {
-          range.setStart(node, offset - currentOffset);
-          range.collapse(true);
-          found = true;
-        }
-        currentOffset = nextOffset;
-      } else {
-        for (let i = 0; i < node.childNodes.length; i++) {
-          traverse(node.childNodes[i]);
-          if (found) break;
-        }
-      }
-    }
-
-    traverse(element);
-    if (found) {
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-  }
-
-  // 🔒 보안 상태 감시
-  const statusBox = document.getElementById('securityStatus');
-  statusBox.textContent = "🔒 보안 상태: 안전 — 외부 전송 없음";
-  statusBox.style.color = "white";
-  statusBox.style.fontSize = "0.9em";
-
-  const originalFetch = window.fetch;
-  window.fetch = function(...args) {
-    statusBox.textContent = "🚨 보안 경고: 외부로 데이터 전송 시도 감지됨!";
-    statusBox.style.backgroundColor = "red";
-    statusBox.style.fontSize = "0.9em";
-    return originalFetch.apply(this, args);
-  };
-
-  const originalXHR = window.XMLHttpRequest;
-  function MonitorXHR() {
-    const xhr = new originalXHR();
-    xhr.addEventListener('loadstart', () => {
-      statusBox.textContent = "🚨 보안 경고: 외부로 데이터 전송 시도 감지됨!";
-      statusBox.style.backgroundColor = "red";
-      statusBox.style.fontSize = "0.9em";
-    });
-    return xhr;
-  }
-  window.XMLHttpRequest = MonitorXHR;
-
-  // 📲 설치 안내 팝업 UI
-  let deferredPrompt;
-
-  const installPopup = document.getElementById('installPopup');
-  const confirmInstall = document.getElementById('confirmInstall');
-  const cancelInstall = document.getElementById('cancelInstall');
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    // prompt()는 여기서 실행하지 않음
-  });
-
-  confirmInstall.addEventListener('click', () => {
-    installPopup.style.display = 'none';
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(choiceResult => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('앱 설치 완료');
-        } else {
-          console.log('사용자가 설치를 취소함');
-        }
-        deferredPrompt = null;
-      });
-    } else {
-      alert('설치를 지원하지 않는 환경입니다.');
-    }
-  });
-
-  cancelInstall.addEventListener('click', () => {
-    installPopup.style.display = 'none';
-    deferredPrompt = null;
-  });
-
-  const installBtn = document.getElementById('installTrigger');
-  if (installBtn) {
-    installBtn.addEventListener('click', () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(choiceResult => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('앱 설치 완료');
-          }
-          deferredPrompt = null;
-          installBtn.style.display = 'none';
+        inputArea.addEventListener('input', () => {
+            if (!isComposing) {
+                highlightKeywords();
+            }
         });
-      }
-    });
-  }
+        
+        // **새로운 엔터키 처리 로직 (가장 안정적)**
+        inputArea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (!isComposing) {
+                    e.preventDefault();
+                    document.execCommand('insertLineBreak');
+                    highlightKeywords();
+                }
+            }
+        });
 
-  // ✅ 설치되지 않은 경우에만 팝업 띄우기
-  window.addEventListener('DOMContentLoaded', () => {
-    const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
-    if (!isInstalled) {
-      installPopup.style.display = 'block';
-    }
+        // 하이라이팅 기능
+        function highlightKeywords() {
+            const caretOffset = getCaretCharacterOffsetWithin(inputArea);
+            const rawText = inputArea.textContent;
+            let keywordCounts = {};
+            let highlightedHtml = '';
+            let lastIndex = 0;
 
-    // ✅ service worker 등록
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('✅ Service Worker 등록 완료'))
-        .catch(err => console.error('❌ Service Worker 등록 실패:', err));
-    }
-  });
-</script>
+            const matches = [...rawText.matchAll(new RegExp(complaintKeywords.join('|'), 'gi'))];
+            
+            if (matches.length > 0) {
+                matches.forEach(match => {
+                    const keyword = match[0];
+                    const index = match.index;
+                    
+                    highlightedHtml += escapeHTML(rawText.substring(lastIndex, index));
+                    highlightedHtml += `<span style="color:red;">${escapeHTML(keyword)}</span>`;
+                    lastIndex = index + keyword.length;
+
+                    keywordCounts[keyword] = (keywordCounts[keyword] || 0) + 1;
+                });
+                highlightedHtml += escapeHTML(rawText.substring(lastIndex));
+                inputArea.innerHTML = highlightedHtml;
+                setCaretPosition(inputArea, caretOffset);
+                updateUIForComplaintState(keywordCounts);
+            } else {
+                inputArea.innerHTML = escapeHTML(rawText);
+                setCaretPosition(inputArea, caretOffset);
+                updateUIForNormalState();
+            }
+        }
+        
+        function escapeHTML(text) {
+            return text.replace(/&/g, '&amp;')
+                       .replace(/</g, '&lt;')
+                       .replace(/>/g, '&gt;');
+        }
+
+        // 키워드 발견 시 UI 업데이트
+        function updateUIForComplaintState(keywordCounts) {
+            inputArea.style.border = '1px solid red';
+            resultBox.className = 'result complaint';
+            resultBox.innerText = '🚨 불만 의심 표현이 감지되었습니다.';
+            resultBox.style.display = 'block';
+
+            keywordList.innerHTML = '';
+            const foundKeywords = Object.keys(keywordCounts);
+            foundKeywords.forEach(k => {
+                const span = document.createElement('span');
+                span.className = 'keyword';
+                span.innerText = `${k}(${keywordCounts[k]})`;
+                span.addEventListener('click', () => {
+                    keywordDescBox.innerText = `「${k}」: ${keywordDescriptions[k] || '설명 없음'}`;
+                    keywordDescBox.style.display = 'block';
+                });
+                keywordList.appendChild(span);
+            });
+
+            const totalCount = Object.values(keywordCounts).reduce((a, b) => a + b, 0);
+            const summary = document.createElement('div');
+            summary.style.marginTop = '10px';
+            summary.style.fontWeight = 'bold';
+            summary.style.fontSize = '1.1em';
+            summary.textContent = `총 감지 단어 수: ${totalCount}개`;
+            keywordList.appendChild(summary);
+        }
+
+        // 키워드 없을 시 UI 업데이트
+        function updateUIForNormalState() {
+            inputArea.style.border = '1px solid #ccc';
+            resultBox.className = 'result normal';
+            resultBox.innerText = '✅ 불만 표현이 감지되지 않았습니다.';
+            resultBox.style.display = 'block';
+            keywordList.innerHTML = '';
+            keywordDescBox.style.display = 'none';
+        }
+        
+        // 커서 위치 저장 및 복원 (하이라이팅 시 필요)
+        function getCaretCharacterOffsetWithin(element) {
+            let caretOffset = 0;
+            const doc = element.ownerDocument || element.document;
+            const win = doc.defaultView || doc.parentWindow;
+            const sel = win.getSelection();
+            if (sel.rangeCount > 0) {
+                const range = sel.getRangeAt(0);
+                const preCaretRange = range.cloneRange();
+                preCaretRange.selectNodeContents(element);
+                preCaretRange.setEnd(range.endContainer, range.endOffset);
+                caretOffset = preCaretRange.toString().length;
+            }
+            return caretOffset;
+        }
+
+        function setCaretPosition(element, offset) {
+            const doc = element.ownerDocument || element.document;
+            const win = doc.defaultView || doc.parentWindow;
+            const sel = win.getSelection();
+            let currentOffset = 0;
+            let found = false;
+
+            function traverse(node) {
+                if (found) return;
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const nextOffset = currentOffset + node.length;
+                    if (offset <= nextOffset) {
+                        const range = doc.createRange();
+                        range.setStart(node, offset - currentOffset);
+                        range.collapse(true);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                        found = true;
+                    }
+                    currentOffset = nextOffset;
+                } else {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        traverse(node.childNodes[i]);
+                        if (found) break;
+                    }
+                }
+            }
+
+            traverse(element);
+        }
+
+        // 🔒 보안 상태 감시
+        const statusBox = document.getElementById('securityStatus');
+        statusBox.textContent = "🔒 보안 상태: 안전 — 외부 전송 없음";
+        statusBox.style.color = "white";
+        statusBox.style.fontSize = "0.9em";
+
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            statusBox.textContent = "🚨 보안 경고: 외부로 데이터 전송 시도 감지됨!";
+            statusBox.style.backgroundColor = "red";
+            statusBox.style.fontSize = "0.9em";
+            return originalFetch.apply(this, args);
+        };
+
+        const originalXHR = window.XMLHttpRequest;
+        function MonitorXHR() {
+            const xhr = new originalXHR();
+            xhr.addEventListener('loadstart', () => {
+                statusBox.textContent = "🚨 보안 경고: 외부로 데이터 전송 시도 감지됨!";
+                statusBox.style.backgroundColor = "red";
+                statusBox.style.fontSize = "0.9em";
+            });
+            return xhr;
+        }
+        window.XMLHttpRequest = MonitorXHR;
+
+        // 📲 설치 안내 팝업 UI
+        let deferredPrompt;
+
+        const installPopup = document.getElementById('installPopup');
+        const confirmInstall = document.getElementById('confirmInstall');
+        const cancelInstall = document.getElementById('cancelInstall');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        confirmInstall.addEventListener('click', () => {
+            installPopup.style.display = 'none';
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(choiceResult => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('앱 설치 완료');
+                    } else {
+                        console.log('사용자가 설치를 취소함');
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                alert('설치를 지원하지 않는 환경입니다.');
+            }
+        });
+
+        cancelInstall.addEventListener('click', () => {
+            installPopup.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        const installBtn = document.getElementById('installTrigger');
+        if (installBtn) {
+            installBtn.addEventListener('click', () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then(choiceResult => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('앱 설치 완료');
+                        }
+                        deferredPrompt = null;
+                        installBtn.style.display = 'none';
+                    });
+                }
+            });
+        }
+
+        // ✅ 설치되지 않은 경우에만 팝업 띄우기
+        window.addEventListener('DOMContentLoaded', () => {
+            const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+            if (!isInstalled) {
+                installPopup.style.display = 'block';
+            }
+
+            // ✅ service worker 등록
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(() => console.log('✅ Service Worker 등록 완료'))
+                    .catch(err => console.error('❌ Service Worker 등록 실패:', err));
+            }
+        });
+    </script>
+</body>
+</html>
