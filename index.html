@@ -210,7 +210,7 @@
             }
         });
         
-        // **새로운 엔터키 처리 로직 (가장 안정적)**
+        // 엔터키 처리 로직
         inputArea.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 if (!isComposing) {
@@ -405,29 +405,16 @@
             deferredPrompt = null;
         });
 
-        const installBtn = document.getElementById('installTrigger');
-        if (installBtn) {
-            installBtn.addEventListener('click', () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then(choiceResult => {
-                        if (choiceResult.outcome === 'accepted') {
-                            console.log('앱 설치 완료');
-                        }
-                        deferredPrompt = null;
-                        installBtn.style.display = 'none';
-                    });
-                }
-            });
-        }
-
-        // ✅ 설치되지 않은 경우에만 팝업 띄우기
+        // ✅ 설치된 경우 팝업 숨기기 로직 수정
         window.addEventListener('DOMContentLoaded', () => {
             const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
             if (!isInstalled) {
-                installPopup.style.display = 'block';
+                // 앱이 설치되어 있지 않은 경우에만 설치 팝업을 표시
+                if (deferredPrompt) {
+                    installPopup.style.display = 'block';
+                }
             }
-
+            
             // ✅ service worker 등록
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('service-worker.js')
